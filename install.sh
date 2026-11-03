@@ -1,25 +1,24 @@
 #!/usr/bin/env sh
 set -e
 
-# UniPanel one-command installer using Docker (builds from source since no public image yet).
+IMAGE="ghcr.io/definitelynotmaxx/unipanel:latest"
 
 if ! command -v docker >/dev/null 2>&1; then
-  echo "Docker is required but not installed: https://docs.docker.com/get-docker/"
+  echo "Docker is required: https://docs.docker.com/get-docker/"
   exit 1
 fi
 
-echo "Cloning UniPanel repository..."
-rm -rf unipanel || true
-git clone https://github.com/definitelynotmaxx/unipanel.git unipanel
-cd unipanel
+echo "Pulling UniPanel image..."
+docker pull "$IMAGE"
 
-echo "Building Docker image locally (this may take several minutes)..."
-docker compose build
-
-echo
 echo "Starting UniPanel..."
-docker compose up -d
+docker rm -f unipanel 2>/dev/null || true
+docker run -d --name unipanel \
+  -p 8080:8080 \
+  -v unipanel_data:/var/lib/unipanel \
+  --restart unless-stopped \
+  "$IMAGE"
 
 echo
-echo "UniPanel is running at http://localhost:8080"
-echo "Complete the first-run setup (locale + admin account) in your browser."
+echo "UniPanel running at http://localhost:8080"
+echo "Complete the first-run setup: locale + admin account."
