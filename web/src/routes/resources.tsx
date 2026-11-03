@@ -1,16 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
-
 import { AuthLayout } from '@/components/AuthLayout';
 import { Schematic } from '@/components/Schematic';
-import { IconBox, IconPlus, IconRefresh, IconSearch } from '@/components/icons';
-import { api, queryKeys } from '@/lib/api';
+import { IconPlus } from '@/components/icons';
 import { t } from '@/lib/i18n';
-import { bootstrapQuery } from '@/lib/queries';
 
-export function ResourcesPage() {
-  const bootstrap = useQuery(bootstrapQuery);
-
-  return (
+export function ResourcesPage() {  return (
     <AuthLayout
       eyebrow={t('resources.eyebrow')}
       headline={t('resources.headline')}
@@ -30,7 +23,7 @@ export function ResourcesPage() {
             <div className="flex items-center justify-between p-3 rounded border border-line hover:bg-ink-1/30 cursor-pointer">
               <div className="flex items-center gap-3">
                 <div className="grid h-10 w-10 place-items-center rounded border border-line bg-ink-1/50">
-                  <IconBox width={18} height={18} className="text-muted" />
+
                 </div>
                 <div>
                   <p className="text-sm font-medium text-paper">Server #1</p>
@@ -43,7 +36,7 @@ export function ResourcesPage() {
             <div className="flex items-center justify-between p-3 rounded border border-line hover:bg-ink-1/30 cursor-pointer">
               <div className="flex items-center gap-3">
                 <div className="grid h-10 w-10 place-items-center rounded border border-line bg-ink-1/50">
-                  <IconBox width={18} height={18} className="text-muted" />
+
                 </div>
                 <div>
                   <p className="text-sm font-medium text-paper-dim">Server #2</p>
@@ -56,7 +49,7 @@ export function ResourcesPage() {
             <div className="flex items-center justify-between p-3 rounded border border-line hover:bg-ink-1/30 cursor-pointer">
               <div className="flex items-center gap-3">
                 <div className="grid h-10 w-10 place-items-center rounded border border-line bg-ink-1/50">
-                  <IconBox width={18} height={18} className="text-muted" />
+
                 </div>
                 <div>
                   <p className="text-sm font-medium text-muted">Server #3</p>
@@ -69,7 +62,7 @@ export function ResourcesPage() {
 
           <div className="mt-6 pt-6 border-t border-line">
             <button className="btn btn-ghost btn-block">
-              <IconRefresh width={14} height={14} className="mr-2" />
+
               {t('resources.catalog.actions.refreshAll')}
             </button>
           </div>
@@ -79,7 +72,7 @@ export function ResourcesPage() {
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-semibold text-paper">{t('resources.details.title')}</h3>
             <button className="btn btn-secondary btn-sm">
-              <IconSearch width={14} height={14} className="mr-2" />
+
               {t('resources.details.actions.search')}
             </button>
           </div>
@@ -151,7 +144,7 @@ export function ResourcesPage() {
         </div>
 
         <div className="panel ticks p-6 lg:col-span-4">
-          <Schematic className="w-full" />
+          <Schematic />
         </div>
       </div>
     </AuthLayout>

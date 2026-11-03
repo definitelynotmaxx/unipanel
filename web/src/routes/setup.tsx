@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useState, type FormEvent } from 'react';
 
@@ -8,17 +8,25 @@ import { IconArrowRight, IconShield } from '@/components/icons';
 import { api, queryKeys } from '@/lib/api';
 import { errorMessage } from '@/lib/errors';
 import { t } from '@/lib/i18n';
-import { bootstrapQuery } from '@/lib/queries';
 
 export function SetupPage() {
-  const bootstrap = useQuery(bootstrapQuery);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
+  const [locale, setLocale] = useState('en');
+  const [username, setUsername] = useState('admin');
+  const [password, setPassword] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [instanceName, setInstanceName] = useState('');
 
   const setup = useMutation({
-    mutationFn: api.setup,
+    mutationFn: (payload: {
+      locale: string;
+      username: string;
+      password: string;
+      display_name: string;
+      instance_name?: null | string;
+    }) => api.setup(payload as never),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: queryKeys.bootstrap });
       await navigate({ to: '/login', replace: true });
@@ -28,21 +36,19 @@ export function SetupPage() {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
     if (setup.isPending) return;
-    setup.mutate({ instanceName: instanceName.trim() || 'UniPanel' });
+    setup.mutate({
+      locale,
+      username: username.trim(),
+      password,
+      display_name: displayName.trim() || username.trim(),
+      instance_name: instanceName.trim() || null,
+    });
   };
-
-  const locale = bootstrap.data?.locale;
 
   return (
     <AuthLayout
       eyebrow={t('setup.eyebrow')}
-      headline={
-        <>
-          {t('setup.headline.prefix')}
-          <span className="text-sodium">{t('setup.headline.accent')}</span>
-          {t('setup.headline.suffix')}
-        </>
-      }
+      headline={t('setup.headline')}
       lead={t('setup.lead')}
       footer={
         <span className="mono text-[8px] uppercase tracking-[0.2em] text-line-strong">
@@ -62,22 +68,31 @@ export function SetupPage() {
 
         <form onSubmit={onSubmit} noValidate>
           <div className="space-y-5">
-            <Field
-              label={t('setup.instanceName')}
-              htmlFor="instance-name"
-              hint={t('setup.instanceNameHint')}
-            >
-              <input
-                id="instance-name"
-                name="instance-name"
-                className="input"
-                value={instanceName}
-                onChange={(event) => setInstanceName(event.target.value)}
-                placeholder={t('setup.instanceNamePlaceholder')}
-                autoComplete="off"
-                required
-                autoFocus
-              />
+            <Field label={t('setup.locale')} htmlFor="locale">
+              <select id="locale" className="input" value={locale} onChange={(e) => setLocale(e.target.value)}>
+                <option value="en">English</option>
+                <option value="de">Deutsch</option>
+              </select>
+            </Field>
+
+            <Field label={t('setup.username')} htmlFor="username">
+              <input id="username" className="input" value={username}
+                onChange={(e) => setUsername(e.target.value)} required autoFocus />
+            </Field>
+
+            <Field label={t('setup.password')} htmlFor="password">
+              <input id="password" className="input" type="password" value={password}
+                onChange={(e) => setPassword(e.target.value)} required />
+            </Field>
+
+            <Field label={t('setup.displayName')} htmlFor="display-name">
+              <input id="display-name" className="input" value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)} />
+            </Field>
+
+            <Field label={t('setup.instanceName')} htmlFor="instance-name">
+              <input id="instance-name" className="input" value={instanceName}
+                onChange={(e) => setInstanceName(e.target.value)} />
             </Field>
 
             {setup.error && <Alert>{errorMessage(setup.error)}</Alert>}
@@ -86,7 +101,7 @@ export function SetupPage() {
           <button
             type="submit"
             className="btn btn-primary btn-block mt-8"
-            disabled={setup.isPending || instanceName.length === 0}
+            disabled={setup.isPending || username.length === 0 || password.length === 0}
           >
             {setup.isPending ? t('setup.submitting') : t('setup.submit')}
             <IconArrowRight width={16} height={16} className={setup.isPending ? 'opacity-40' : ''} />

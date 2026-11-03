@@ -1,15 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
-
 import { AuthLayout } from '@/components/AuthLayout';
 import { Schematic } from '@/components/Schematic';
-import { IconCode, IconCloud, IconFileText, IconPlus, IconServer } from '@/components/icons';
-import { api, queryKeys } from '@/lib/api';
+import { IconPlus } from '@/components/icons';
 import { t } from '@/lib/i18n';
-import { bootstrapQuery } from '@/lib/queries';
 
 export function AdminPage() {
-  const bootstrap = useQuery(bootstrapQuery);
-
   return (
     <AuthLayout
       eyebrow={t('admin.eyebrow')}
@@ -24,7 +18,7 @@ export function AdminPage() {
             <div className="panel ticks p-4 hover:bg-ink-1/20 transition-colors cursor-pointer">
               <div className="flex items-center gap-3 mb-3">
                 <div className="grid h-10 w-10 place-items-center rounded border border-line bg-ink-1/50">
-                  <IconServer width={18} height={18} className="text-blue-500" />
+                  <IconPlus width={18} height={18} className="text-blue-500" />
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-medium text-paper">Minecraft Server</p>
@@ -35,19 +29,15 @@ export function AdminPage() {
 
               <div className="grid grid-cols-2 gap-2 mt-3">
                 <div className="flex items-center gap-2">
-                  <IconCode width={14} height={14} className="text-muted" />
                   <span className="mono text-xs text-muted">API configured</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <IconCloud width={14} height={14} className="text-muted" />
                   <span className="mono text-xs text-muted">BungeeCord</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <IconFileText width={14} height={14} className="text-muted" />
                   <span className="mono text-xs text-muted">World templates</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <IconPlus width={14} height={14} className="text-muted" />
                   <span className="mono text-xs text-muted">Auto-create</span>
                 </div>
               </div>
@@ -58,7 +48,7 @@ export function AdminPage() {
             <div className="panel ticks p-4 hover:bg-ink-1/20 transition-colors cursor-pointer opacity-70">
               <div className="flex items-center gap-3 mb-3">
                 <div className="grid h-10 w-10 place-items-center rounded border border-line bg-ink-1/50">
-                  <IconServer width={18} height={18} className="text-muted" />
+                  <IconPlus width={18} height={18} className="text-muted" />
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-medium text-muted">Pterodactyl Panel</p>
@@ -69,11 +59,9 @@ export function AdminPage() {
 
               <div className="grid grid-cols-2 gap-2 mt-3">
                 <div className="flex items-center gap-2">
-                  <IconCode width={14} height={14} className="text-muted" />
                   <span className="mono text-xs text-muted">API configured</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <IconCloud width={14} height={14} className="text-muted" />
                   <span className="mono text-xs text-muted">Multiple servers</span>
                 </div>
               </div>
@@ -169,7 +157,7 @@ export function AdminPage() {
         </div>
 
         <div className="panel ticks p-6 lg:col-span-4">
-          <Schematic className="w-full" />
+          <Schematic />
         </div>
       </div>
     </AuthLayout>

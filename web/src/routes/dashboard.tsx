@@ -3,17 +3,14 @@ import { useNavigate } from '@tanstack/react-router';
 
 import { AuthLayout } from '@/components/AuthLayout';
 import { Schematic } from '@/components/Schematic';
-import { IconStack, IconSliders, IconClock } from '@/components/icons';
-import { api, queryKeys } from '@/lib/api';
+import { IconSliders, IconStack } from '@/components/icons';
 import { t } from '@/lib/i18n';
-import { bootstrapQuery, infoQuery } from '@/lib/queries';
+import { bootstrapQuery } from '@/lib/queries';
 
 export function DashboardPage() {
   const bootstrap = useQuery(bootstrapQuery);
-  const info = useQuery(infoQuery);
   const navigate = useNavigate();
 
-  const instanceName = bootstrap.data?.instance_name ?? 'UniPanel';
   const version = bootstrap.data?.version;
 
   const navigateTo = (path: string) => {
@@ -101,7 +98,7 @@ export function DashboardPage() {
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="grid h-12 w-12 place-items-center rounded border border-line bg-ink-1/50">
-                <IconClock width={20} height={20} className="text-amber-500" />
+
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-paper">{t('dashboard.system.title')}</h3>
@@ -161,7 +158,7 @@ export function DashboardPage() {
         </div>
 
         <div className="panel ticks p-6 xl:col-span-1">
-          <Schematic className="w-full" />
+          <Schematic />
         </div>
       </div>
     </AuthLayout>

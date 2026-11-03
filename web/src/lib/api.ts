@@ -92,7 +92,7 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
       response.status,
       body?.error?.key ?? 'internal',
       (body?.error?.params ?? {}) as Record<string, unknown>,
-      body?.request_id,
+      body?.request_id ?? undefined,
     );
   }
 

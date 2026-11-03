@@ -96,6 +96,6 @@ mod tests {
     #[test]
     fn stop_action_serialises_correctly() {
         let json = serde_json::to_value(ActionKind::Stop).expect("json");
-        assert_eq!(json, serde_json::json!({"kind": "stop", "name": null}));
+        assert_eq!(json, serde_json::json!({"kind": "stop"}));
     }
 }
