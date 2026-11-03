@@ -1,10 +1,10 @@
 import { createRootRoute, createRoute, createRouter, Outlet } from '@tanstack/react-router';
 
 import { AppShell } from '@/components/AppShell';
+import { AdminPage } from '@/routes/admin';
 import { DashboardPage } from '@/routes/dashboard';
 import { LoginPage } from '@/routes/login';
 import { ResourcesPage } from '@/routes/resources';
-import { AdminPage } from '@/routes/admin';
 import { SetupPage } from '@/routes/setup';
 
 const rootRoute = createRootRoute({
@@ -13,19 +13,20 @@ const rootRoute = createRootRoute({
 
 const setupRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/setup',
+  path: 'setup', // relative path; TanStack prepends /
   component: SetupPage,
 });
 
 const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/login',
+  path: 'login',
   component: LoginPage,
 });
 
+// Pathless layout wrapper that draws the sidebar shell.
 const appRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/',
+  id: 'app-layout',
   component: AppShell,
 });
 
@@ -37,13 +38,13 @@ const dashboardRoute = createRoute({
 
 const resourcesRoute = createRoute({
   getParentRoute: () => appRoute,
-  path: '/resources',
+  path: 'resources',
   component: ResourcesPage,
 });
 
 const adminRoute = createRoute({
   getParentRoute: () => appRoute,
-  path: '/admin',
+  path: 'admin',
   component: AdminPage,
 });
 
