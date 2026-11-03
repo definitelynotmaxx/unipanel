@@ -1,0 +1,31 @@
+# UniPanel — one-line deployment
+# Usage:
+#   curl -fsSL https://raw.githubusercontent.com/definitelynotmaxx/unipanel/main/install.sh | sh
+#   OR: docker compose up -d
+
+version: '3.8'
+
+services:
+  unipanel:
+    image: ghcr.io/definitelynotmaxx/unipanel:latest
+    container_name: unipanel
+    restart: unless-stopped
+    environment:
+      - UNIPANEL_BIND=0.0.0.0:8080
+      - UNIPANEL_DATA_DIR=/var/lib/unipanel
+      - UNIPANEL_PUBLIC_URL=${UNIPANEL_PUBLIC_URL:-http://localhost:8080}
+      - UNIPANEL_COOKIE_SECURE=${UNIPANEL_SECURE:-false}
+    ports:
+      - "${UNIPANEL_PORT:-8080}:8080"
+    volumes:
+      - unipanel_data:/var/lib/unipanel
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1:8080/healthz']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  unipanel_data:
+    name: unipanel_data

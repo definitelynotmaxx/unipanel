@@ -1,35 +1,62 @@
 # UniPanel
 
-A self-hosted control panel. One Rust binary, embedded React frontend, SQLite database.
+Self-hosted control panel. One Rust binary, embedded React frontend, SQLite database, MIT license.
 
-## Quick start
+## Quick install (recommended)
 
-    docker run -d -p 8080:8080 -v /var/lib/unipanel:/var/lib/unipanel unipanel:latest
+### With Docker (one line):
 
-Then open <http://localhost:8080> and follow the first-run setup (locale + admin account).
+```sh
+curl -fsSL https://raw.githubusercontent.com/definitelynotmaxx/unipanel/main/install.sh | sh
+```
+
+### With Docker Compose:
+
+```sh
+# Download the file
+curl -fsSL https://raw.githubusercontent.com/definitelynotmaxx/unipanel/main/docker-compose.yml -o docker-compose.yml
+# Start
+docker compose up -d
+# Open browser
+# https://localhost:8080  (or :8080)
+```
+
+On first launch you'll be prompted for:
+1. **Instance language** (English / Deutsch)
+2. **Admin account** (username + password + display name + optional instance name)
+
+After setup you land at the login screen.
+
+## Container configuration
+
+Set any of these `ENV` vars (prefix `UNIPANEL_`):
+
+| Var | Default |
+|-----|---------|
+| `BIND` | `0.0.0.0:8080` |
+| `PUBLIC_URL` | (auto) |
+| `DATA_DIR` | `/var/lib/unipanel` |
+| `TRUST_PROXY` | `false` |
+| `MASTER_KEY` | auto-generated |
+| `LOG` | `info` |
 
 ## Development
 
-This repository contains both the Rust workspace and the embedded SPA.
+- Rust 1.80+ via [rustup](https://rustup.rs)
+- Node 22+
 
-- Rust toolchain: install via [rustup](https://rustup.rs). This project is tested on `x86_64-pc-windows-gnu` (MinGW) and Linux aarch64.
-- Node: 20+ (tested with v22).
+```sh
+cargo build -p unipanel-cli
+cd web && npm ci && npm run build && cd ..
+./target/debug/unipanel serve
+```
 
-Build & run locally:
-
-    cargo build -p unipanel-cli
-    cd web && npm install && npm run build && cd ..
-    ./target/debug/unipanel serve
-
-Run tests:
-
-    cargo test --workspace
-    cd web && npm run test && npm run typecheck && npm run lint
-
-## Configuration
-
-All configuration is via environment variables prefixed `UNIPANEL_` (see `.env.example`).
+Tests:
+```sh
+cargo test --workspace
+cd web && npm test && npm run typecheck && npm run lint
+```
 
 ## License
 
-MIT — see [LICENSE](./LICENSE).
+MIT — see `LICENSE`.
