@@ -16,7 +16,7 @@ RUN apk add --no-cache build-base musl-dev pkgconfig
 COPY . .
 COPY --from=web /web/dist ./web/dist
 RUN cargo build -p unipanel-cli --release 2>&1 | tee /tmp/rust.log
-RUN cp target/release/unipanel /out/unipanel 2>/dev/null || cp target/release/unipanel.exe /out/unipanel
+RUN mkdir -p /out && cp target/release/unipanel /out/unipanel
 
 # ---------- final image ----------
 FROM alpine:3.20 AS runtime
