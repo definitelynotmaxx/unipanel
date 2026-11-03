@@ -7,9 +7,12 @@ version: '3.8'
 
 services:
   unipanel:
-    image: ghcr.io/definitelynotmaxx/unipanel:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: unipanel
     restart: unless-stopped
+    image: unipanel:latest
     environment:
       - UNIPANEL_BIND=0.0.0.0:8080
       - UNIPANEL_DATA_DIR=/var/lib/unipanel
