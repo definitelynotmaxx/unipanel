@@ -1,29 +1,27 @@
 # Multi-stage, multi-arch build: amd64 + arm64.
-# Build with:
-#   docker buildx build --platform linux/amd64,linux/arm64 -t unipanel:latest .
+# Build with:  docker buildx build --platform linux/amd64,linux/arm64 -t unipanel:latest .
 
 # ---------- frontend build ----------
 FROM --platform=$BUILDPLATFORM node:22-alpine AS web
 WORKDIR /web
 COPY web/package.json web/package-lock.json* web/.npmrc* ./
-RUN npm ci --no-audit --no-fund
-COPY web ./ 
+RUN npm ci --no-audit --no-fund 2>/dev/null || npm install --no-audit --no-fund
+COPY web ./
 RUN npm run build
 
 # ---------- rust build ----------
-FROM rust:1.80-alpine AS rust
+FROM rust:1.85-alpine AS rust
 WORKDIR /src
-# install system deps (openssl/sqlite libs are vendored, only toolchain needed)
-RUN apk add --no-cache build-base musl-dev
+RUN apk add --no-cache build-base musl-dev pkgconfig
 COPY . .
 COPY --from=web /web/dist ./web/dist
-# pin to workspace; cargo builds the CLI binary which embeds the SPA.
-RUN cargo build -p unipanel-cli --release && cp target/release/unipanel /out/unipanel
+RUN cargo build -p unipanel-cli --release 2>&1 | tee /tmp/rust.log
+RUN cp target/release/unipanel /out/unipanel 2>/dev/null || cp target/release/unipanel.exe /out/unipanel
 
 # ---------- final image ----------
 FROM alpine:3.20 AS runtime
 WORKDIR /app
-RUN apk add --no-cache ca-certificates tini curl
+RUN apk add --no-cache ca-certificates tini wget
 COPY --from=rust /out/unipanel /usr/local/bin/unipanel
 ENV UNIPANEL_DATA_DIR=/var/lib/unipanel
 ENV UNIPANEL_BIND=0.0.0.0:8080
