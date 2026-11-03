@@ -1,0 +1,519 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "UniPanel API",
+    "description": "Self-hosted control panel API. All errors use the message-key envelope.",
+    "contact": {
+      "name": "UniPanel contributors"
+    },
+    "license": {
+      "name": "MIT"
+    },
+    "version": "0.0.0"
+  },
+  "paths": {
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Verifies credentials and opens a session.",
+        "description": "The response is identical for unknown users and wrong passwords, and both\npaths spend the same Argon2 time, so the endpoint does not leak which accounts\nexist.\n\n# Errors\nReturns [`ErrorKey::AuthInvalidCredentials`], [`ErrorKey::AuthRateLimited`] (with\na `retry_after` parameter) or [`ErrorKey::AuthAccountDisabled`].",
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorBody"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Ends the current session. Always succeeds, so a stale cookie can be cleared.",
+        "operationId": "logout",
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/auth/session": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Returns the signed-in user and the session's CSRF token.",
+        "description": "# Errors\nReturns [`ErrorKey::AuthRequired`] without a valid session.",
+        "operationId": "session",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bootstrap": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Returns locale, setup state, session and CSRF token.",
+        "description": "# Errors\nReturns an [`ApiError`] when the database cannot be read.",
+        "operationId": "bootstrap",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BootstrapResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/setup": {
+      "post": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Performs first-run setup and signs the new administrator in.",
+        "description": "# Errors\nReturns [`ErrorKey::SetupAlreadyCompleted`] when the instance is configured,\n[`ErrorKey::SetupInvalid`] for malformed input and the password policy keys\nfor weak passwords.",
+        "operationId": "setup",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetupRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorBody"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/system/health": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "JSON health details for the UI status pill.",
+        "description": "# Errors\nReturns [`ErrorKey::Internal`] when the database probe fails.",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/system/info": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Instance metadata for the app shell.",
+        "description": "# Errors\nReturns [`ErrorKey::Internal`] when instance settings cannot be read.",
+        "operationId": "info",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemInfoResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiErrorBody": {
+        "type": "object",
+        "description": "Error payload shared by every endpoint.",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ApiErrorPayload",
+            "description": "The translatable error."
+          },
+          "request_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Correlation id, also present in the `x-request-id` response header."
+          }
+        }
+      },
+      "ApiErrorPayload": {
+        "type": "object",
+        "description": "Message key and interpolation parameters.",
+        "required": [
+          "key"
+        ],
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "Stable message key, e.g. `auth.required`."
+          },
+          "params": {
+            "type": "object",
+            "description": "Values interpolated by the frontend.",
+            "additionalProperties": {},
+            "propertyNames": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "BootstrapResponse": {
+        "type": "object",
+        "description": "Boot information fetched before anything else renders.",
+        "required": [
+          "setup_required",
+          "authenticated",
+          "locale",
+          "suggested_locale",
+          "instance_name",
+          "version",
+          "csrf_token"
+        ],
+        "properties": {
+          "authenticated": {
+            "type": "boolean",
+            "description": "Whether the request carried a valid session."
+          },
+          "csrf_token": {
+            "type": "string",
+            "description": "CSRF token to send with unsafe requests."
+          },
+          "instance_name": {
+            "type": "string",
+            "description": "Instance name for the document title."
+          },
+          "locale": {
+            "type": "string",
+            "description": "Instance locale, or the suggested one while unconfigured."
+          },
+          "setup_required": {
+            "type": "boolean",
+            "description": "Whether the first-run wizard must be shown."
+          },
+          "suggested_locale": {
+            "type": "string",
+            "description": "Locale guessed from `Accept-Language`, used to preselect the wizard."
+          },
+          "user": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/UserDto",
+                "description": "Signed-in user, if any."
+              }
+            ]
+          },
+          "version": {
+            "type": "string",
+            "description": "Server version."
+          }
+        }
+      },
+      "HealthResponse": {
+        "type": "object",
+        "description": "Liveness/readiness payload.",
+        "required": [
+          "status",
+          "version",
+          "uptime_seconds",
+          "database_ok"
+        ],
+        "properties": {
+          "database_ok": {
+            "type": "boolean",
+            "description": "Whether the database answered a probe query."
+          },
+          "status": {
+            "type": "string",
+            "description": "Always `ok` when the process can answer."
+          },
+          "uptime_seconds": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Seconds since start."
+          },
+          "version": {
+            "type": "string",
+            "description": "Server version."
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "description": "Login payload.",
+        "required": [
+          "username",
+          "password"
+        ],
+        "properties": {
+          "password": {
+            "type": "string",
+            "description": "Password."
+          },
+          "username": {
+            "type": "string",
+            "description": "Login name."
+          }
+        }
+      },
+      "SessionResponse": {
+        "type": "object",
+        "description": "Result of a successful login, setup or session lookup.",
+        "required": [
+          "user",
+          "csrf_token"
+        ],
+        "properties": {
+          "csrf_token": {
+            "type": "string",
+            "description": "CSRF token bound to the new session."
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserDto",
+            "description": "Signed-in account."
+          }
+        }
+      },
+      "SetupRequest": {
+        "type": "object",
+        "description": "First-run setup payload.",
+        "required": [
+          "locale",
+          "username",
+          "display_name",
+          "password"
+        ],
+        "properties": {
+          "display_name": {
+            "type": "string",
+            "description": "Administrator display name."
+          },
+          "instance_name": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Optional instance name."
+          },
+          "locale": {
+            "type": "string",
+            "description": "`en` or `de`; immutable afterwards."
+          },
+          "password": {
+            "type": "string",
+            "description": "Administrator password (plain, over TLS in production)."
+          },
+          "username": {
+            "type": "string",
+            "description": "Administrator login name."
+          }
+        }
+      },
+      "SystemInfoResponse": {
+        "type": "object",
+        "description": "Instance information for the app shell.",
+        "required": [
+          "version",
+          "locale",
+          "instance_name",
+          "started_at",
+          "uptime_seconds",
+          "schema_version",
+          "database"
+        ],
+        "properties": {
+          "database": {
+            "type": "string",
+            "description": "Database backend description."
+          },
+          "instance_name": {
+            "type": "string",
+            "description": "Instance name."
+          },
+          "locale": {
+            "type": "string",
+            "description": "Instance locale."
+          },
+          "schema_version": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Storage schema version this build expects."
+          },
+          "started_at": {
+            "type": "string",
+            "description": "Server start time (RFC 3339)."
+          },
+          "uptime_seconds": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Seconds since start."
+          },
+          "version": {
+            "type": "string",
+            "description": "Server version."
+          }
+        }
+      },
+      "UserDto": {
+        "type": "object",
+        "description": "A user as exposed over HTTP.",
+        "required": [
+          "id",
+          "username",
+          "display_name",
+          "role",
+          "created_at"
+        ],
+        "properties": {
+          "created_at": {
+            "type": "string",
+            "description": "Creation timestamp (RFC 3339)."
+          },
+          "display_name": {
+            "type": "string",
+            "description": "Display name."
+          },
+          "id": {
+            "type": "string",
+            "description": "Account id."
+          },
+          "role": {
+            "type": "string",
+            "description": "Role name (`admin` or `member`)."
+          },
+          "username": {
+            "type": "string",
+            "description": "Login name."
+          }
+        }
+      }
+    }
+  }
+}
