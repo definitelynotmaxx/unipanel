@@ -1,5 +1,5 @@
 # Multi-stage, multi-arch build: amd64 + arm64.
-# Build with:  docker buildx build --platform linux/amd64,linux/arm64 -t unipanel:latest .
+# Optimize build cache: incremental cargo with cache mount to /usr/local/cargo/registry and /target
 
 # ---------- frontend build ----------
 FROM --platform=$BUILDPLATFORM node:22-alpine AS web
@@ -13,10 +13,20 @@ RUN npm run build
 FROM rust:1.85-alpine AS rust
 WORKDIR /src
 RUN apk add --no-cache build-base musl-dev pkgconfig
-COPY . .
+# Separate dependency layer for cache efficiency
+COPY Cargo.toml Cargo.lock ./
+COPY crates ./crates
 COPY --from=web /web/dist ./web/dist
-RUN cargo build -p unipanel-cli --release 2>&1 | tee /tmp/rust.log
-RUN mkdir -p /out && cp target/release/unipanel /out/unipanel
+# Mount cache dirs, fetch first, then build
+RUN --mount=type=cache,target=/usr/local/cargo/registry \
+    --mount=type=cache,target=/usr/local/cargo/git \
+    --mount=type=cache,target=/src/target \
+    cargo fetch 2>&1 | tail -3 || true
+RUN --mount=type=cache,target=/usr/local/cargo/registry \
+    --mount=type=cache,target=/usr/local/cargo/git \
+    --mount=type=cache,target=/src/target \
+    cargo build -p unipanel-cli --release 2>&1 | tail -20
+RUN mkdir -p /out && cp /src/target/release/unipanel /out/unipanel
 
 # ---------- final image ----------
 FROM alpine:3.20 AS runtime
