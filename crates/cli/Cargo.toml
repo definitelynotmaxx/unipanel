@@ -1,0 +1,27 @@
+[package]
+name = "unipanel-cli"
+description = "Command line interface and binary for UniPanel"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[lints]
+workspace = true
+
+[[bin]]
+name = "unipanel"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive", "env"] }
+serde_json = "1"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "signal"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+unipanel-core = { path = "../core" }
+unipanel-server = { path = "../server" }
+unipanel-storage = { path = "../storage" }

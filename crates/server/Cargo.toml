@@ -1,0 +1,38 @@
+[package]
+name = "unipanel-server"
+description = "Axum application, HTTP API and embedded SPA for UniPanel"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+axum = { version = "0.8", features = ["macros"] }
+axum-extra = { version = "0.10", features = ["cookie"] }
+mime_guess = "2"
+rust-embed = "8"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+time = { version = "0.3", features = ["serde", "formatting", "macros"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "signal", "net"] }
+tower = "0.5"
+tower-http = { version = "0.6", features = ["catch-panic", "compression-gzip", "compression-br", "timeout", "trace"] }
+tracing = "0.1"
+unipanel-auth = { path = "../auth" }
+unipanel-core = { path = "../core" }
+unipanel-crypto = { path = "../crypto" }
+unipanel-storage = { path = "../storage" }
+utoipa = { version = "5", features = ["time"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+
+[dev-dependencies]
+http-body-util = "0.1"
+tempfile = "3"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "time", "net"] }
+tower = { version = "0.5", features = ["util"] }

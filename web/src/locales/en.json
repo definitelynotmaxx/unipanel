@@ -1,0 +1,203 @@
+{
+  "app": {
+    "name": "UniPanel",
+    "tagline": "Control plane",
+    "version": "Version",
+    "loading": "Loading",
+    "cancel": "Cancel",
+    "back": "Back",
+    "continue": "Continue",
+    "optional": "optional",
+    "required": "required",
+    "offline": "Unreachable",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "locale": {
+    "en": "English",
+    "de": "Deutsch"
+  },
+  "login": {
+    "eyebrow": "Access control",
+    "title": "Sign in",
+    "lead": "Authenticate to reach the control plane.",
+    "username": "Username",
+    "usernamePlaceholder": "admin",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "submit": "Enter panel",
+    "submitting": "Verifying",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "capsLock": "Caps Lock is active.",
+    "footer": "Sessions expire after 30 days of inactivity."
+  },
+  "setup": {
+    "eyebrow": "First run",
+    "step": "Step",
+    "of": "of",
+    "language": {
+      "title": "Choose the instance language",
+      "lead": "This is the language of the panel, its notifications and its audit log. It applies to every user.",
+      "note": "You can only change it later from the command line, with a clear warning.",
+      "permanent": "Permanent choice",
+      "continue": "Continue to account"
+    },
+    "account": {
+      "title": "Create the administrator",
+      "lead": "This account owns the instance. Additional users and roles arrive with the access milestone.",
+      "instanceName": "Instance name",
+      "instanceNameHint": "Shown in the browser title and on the sign-in screen.",
+      "instanceNamePlaceholder": "Homelab",
+      "username": "Username",
+      "usernameHint": "2–32 characters: letters, digits, dot, dash, underscore.",
+      "displayName": "Display name",
+      "displayNamePlaceholder": "Ada Lovelace",
+      "password": "Password",
+      "passwordHint": "At least 10 characters. Length beats complexity.",
+      "confirm": "Confirm password",
+      "submit": "Create instance",
+      "submitting": "Creating instance",
+      "back": "Change language",
+      "summary": "Language",
+      "strength": {
+        "label": "Strength",
+        "empty": "—",
+        "weak": "Weak",
+        "fair": "Fair",
+        "good": "Good",
+        "strong": "Strong"
+      },
+      "mismatch": "Passwords do not match.",
+      "noMatch": "Enter the same password again."
+    },
+    "done": {
+      "title": "Instance ready",
+      "lead": "Signing you in."
+    }
+  },
+  "nav": {
+    "sectionControl": "Control",
+    "sectionSystem": "System",
+    "dashboards": "Dashboards",
+    "resources": "All resources",
+    "admin": "Administration",
+    "collapse": "Collapse sidebar",
+    "expand": "Expand sidebar",
+    "logout": "Sign out",
+    "menu": "Menu"
+  },
+  "shell": {
+    "health": {
+      "ok": "All systems nominal",
+      "checking": "Checking",
+      "down": "Server unreachable"
+    },
+    "connectors": "Connectors",
+    "resources": "Resources",
+    "uptime": "Uptime",
+    "commandHint": "Command palette arrives in M6",
+    "account": "Account"
+  },
+  "dashboard": {
+    "eyebrow": "Overview",
+    "title": "Dashboards",
+    "lead": "Arrange widgets per user or share a layout with the team.",
+    "newDashboard": "New dashboard",
+    "emptyTitle": "No dashboard yet",
+    "emptyLead": "Dashboards become useful once a connector is live. The grid is already laid out for the widgets that follow.",
+    "slots": {
+      "status": "Status tile",
+      "gauge": "Gauge",
+      "list": "Resource list",
+      "chart": "Time series",
+      "power": "Power controls",
+      "link": "Link tile"
+    },
+    "slotHint": "Available in M1",
+    "schematic": {
+      "title": "Signal path",
+      "lead": "The browser never talks to your infrastructure. One poller per connector feeds a shared cache, which is pushed to every client.",
+      "browser": "Browser",
+      "core": "UniPanel",
+      "coreSub": "cache · poller",
+      "upstream": "Upstream systems",
+      "connectors": "0 connectors",
+      "resources": "0 resources"
+    },
+    "connect": {
+      "title": "No connections yet",
+      "lead": "Pterodactyl, Docker, Proxmox, Portainer and any REST API will plug in here.",
+      "cta": "Add connection",
+      "ctaHint": "Connector registry lands in M1"
+    }
+  },
+  "resources": {
+    "eyebrow": "Inventory",
+    "title": "All resources",
+    "lead": "Every server, container and virtual machine from every connector in one table.",
+    "columns": {
+      "name": "Name",
+      "kind": "Kind",
+      "status": "Status",
+      "connector": "Connector",
+      "cpu": "CPU",
+      "memory": "Memory"
+    },
+    "empty": {
+      "title": "Nothing to list",
+      "lead": "Resources appear as soon as a connector reports them. Actions, consoles and files follow the capability flags of each connector."
+    },
+    "filter": "Filter resources",
+    "filterHint": "Disabled until a connector exists"
+  },
+  "admin": {
+    "eyebrow": "System",
+    "title": "Administration",
+    "lead": "Instance settings, users, roles and the audit trail.",
+    "instance": {
+      "title": "Instance",
+      "name": "Name",
+      "locale": "Language",
+      "localeNote": "Fixed per instance. Change it with the CLI command admin set-locale.",
+      "version": "Server version",
+      "schema": "Schema",
+      "database": "Database",
+      "uptime": "Uptime",
+      "started": "Started"
+    },
+    "users": {
+      "title": "Users and roles",
+      "lead": "RBAC, OIDC providers and group mappings arrive with the access milestone.",
+      "badge": "M4"
+    },
+    "audit": {
+      "title": "Audit log",
+      "lead": "Logins and control actions are already recorded as message keys. The viewer lands with the access milestone.",
+      "badge": "M4"
+    }
+  },
+  "notFound": {
+    "eyebrow": "Error 404",
+    "title": "No such page",
+    "lead": "The route does not exist. It may have moved with a later milestone.",
+    "back": "Back to dashboards"
+  },
+  "errors": {
+    "request.invalid": "The request was rejected. Check the values and try again.",
+    "request.not_found": "The requested resource does not exist.",
+    "request.csrf": "Your session could not be verified. Reload the page and try again.",
+    "auth.required": "Sign in to continue.",
+    "auth.forbidden": "You are not allowed to do that.",
+    "auth.invalid_credentials": "Username or password is incorrect.",
+    "auth.rate_limited": "Too many attempts. Try again in {retry_after} seconds.",
+    "auth.account_disabled": "This account is disabled.",
+    "auth.session_expired": "Your session expired. Sign in again.",
+    "setup.already_completed": "This instance is already configured.",
+    "setup.invalid": "Some values are invalid. Check the highlighted field.",
+    "password.too_short": "The password is too short. Use at least 10 characters.",
+    "password.too_common": "That password is too common or contains your account name.",
+    "password.mismatch": "The passwords do not match.",
+    "internal": "Something went wrong on the server. The event was logged."
+  }
+}

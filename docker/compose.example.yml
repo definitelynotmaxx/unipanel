@@ -1,0 +1,23 @@
+# Example deployment. Adjust paths and environment variables as needed.
+# Usage:
+#   UNIPANEL_DATA=/var/lib/unipanel docker compose -f docker/compose.example.yml up -d
+
+version: "3.8"
+
+services:
+  unipanel:
+    image: ghcr.io/unipanel/unipanel:latest
+    restart: unless-stopped
+    environment:
+      UNIPANEL_PUBLIC_URL: https://panel.example.com
+      UNIPANEL_SECURE: "true"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ${UNIPANEL_DATA:-./data}:/var/lib/unipanel
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

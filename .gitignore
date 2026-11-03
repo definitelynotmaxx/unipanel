@@ -1,0 +1,35 @@
+# Rust
+/target
+**/*.rs.bk
+*.pdb
+
+# Frontend
+web/node_modules
+web/dist
+web/coverage
+web/playwright-report
+web/test-results
+*.tsbuildinfo
+
+# Runtime data
+/data
+*.db
+*.db-shm
+*.db-wal
+master.key
+.env
+.env.local
+
+# Editors / OS
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# keep the empty frontend build dir for rust-embed
+!web/dist/.gitkeep

@@ -1,0 +1,203 @@
+{
+  "app": {
+    "name": "UniPanel",
+    "tagline": "Leitzentrale",
+    "version": "Version",
+    "loading": "Wird geladen",
+    "cancel": "Abbrechen",
+    "back": "Zurück",
+    "continue": "Weiter",
+    "optional": "optional",
+    "required": "erforderlich",
+    "offline": "Nicht erreichbar",
+    "copy": "Kopieren",
+    "copied": "Kopiert"
+  },
+  "locale": {
+    "en": "English",
+    "de": "Deutsch"
+  },
+  "login": {
+    "eyebrow": "Zugangskontrolle",
+    "title": "Anmelden",
+    "lead": "Melden Sie sich an, um die Leitzentrale zu öffnen.",
+    "username": "Benutzername",
+    "usernamePlaceholder": "admin",
+    "password": "Passwort",
+    "passwordPlaceholder": "Passwort eingeben",
+    "submit": "Panel öffnen",
+    "submitting": "Wird geprüft",
+    "showPassword": "Passwort anzeigen",
+    "hidePassword": "Passwort verbergen",
+    "capsLock": "Feststelltaste ist aktiv.",
+    "footer": "Sitzungen laufen nach 30 Tagen ab."
+  },
+  "setup": {
+    "eyebrow": "Erste Einrichtung",
+    "step": "Schritt",
+    "of": "von",
+    "language": {
+      "title": "Sprache der Instanz wählen",
+      "lead": "Das ist die Sprache des Panels, seiner Benachrichtigungen und des Audit-Logs. Sie gilt für alle Benutzer.",
+      "note": "Ändern lässt sie sich später nur noch über die Kommandozeile, mit deutlicher Warnung.",
+      "permanent": "Dauerhafte Wahl",
+      "continue": "Weiter zum Konto"
+    },
+    "account": {
+      "title": "Administrator anlegen",
+      "lead": "Dieses Konto besitzt die Instanz. Weitere Benutzer und Rollen folgen mit dem Zugriffs-Meilenstein.",
+      "instanceName": "Name der Instanz",
+      "instanceNameHint": "Erscheint im Browsertitel und auf der Anmeldeseite.",
+      "instanceNamePlaceholder": "Homelab",
+      "username": "Benutzername",
+      "usernameHint": "2–32 Zeichen: Buchstaben, Ziffern, Punkt, Bindestrich, Unterstrich.",
+      "displayName": "Anzeigename",
+      "displayNamePlaceholder": "Ada Lovelace",
+      "password": "Passwort",
+      "passwordHint": "Mindestens 10 Zeichen. Länge schlägt Komplexität.",
+      "confirm": "Passwort bestätigen",
+      "submit": "Instanz anlegen",
+      "submitting": "Instanz wird angelegt",
+      "back": "Sprache ändern",
+      "summary": "Sprache",
+      "strength": {
+        "label": "Stärke",
+        "empty": "—",
+        "weak": "Schwach",
+        "fair": "Mittel",
+        "good": "Gut",
+        "strong": "Stark"
+      },
+      "mismatch": "Die Passwörter stimmen nicht überein.",
+      "noMatch": "Geben Sie dasselbe Passwort erneut ein."
+    },
+    "done": {
+      "title": "Instanz bereit",
+      "lead": "Sie werden angemeldet."
+    }
+  },
+  "nav": {
+    "sectionControl": "Steuerung",
+    "sectionSystem": "System",
+    "dashboards": "Dashboards",
+    "resources": "Alle Ressourcen",
+    "admin": "Administration",
+    "collapse": "Seitenleiste einklappen",
+    "expand": "Seitenleiste ausklappen",
+    "logout": "Abmelden",
+    "menu": "Menü"
+  },
+  "shell": {
+    "health": {
+      "ok": "Alle Systeme nominal",
+      "checking": "Wird geprüft",
+      "down": "Server nicht erreichbar"
+    },
+    "connectors": "Verbindungen",
+    "resources": "Ressourcen",
+    "uptime": "Laufzeit",
+    "commandHint": "Die Befehlspalette folgt in M6",
+    "account": "Konto"
+  },
+  "dashboard": {
+    "eyebrow": "Übersicht",
+    "title": "Dashboards",
+    "lead": "Widgets pro Benutzer anordnen oder ein Layout mit dem Team teilen.",
+    "newDashboard": "Neues Dashboard",
+    "emptyTitle": "Noch kein Dashboard",
+    "emptyLead": "Dashboards werden nützlich, sobald eine Verbindung aktiv ist. Das Raster ist bereits für die kommenden Widgets vorbereitet.",
+    "slots": {
+      "status": "Statuskachel",
+      "gauge": "Messanzeige",
+      "list": "Ressourcenliste",
+      "chart": "Zeitreihe",
+      "power": "Energieaktionen",
+      "link": "Linkkachel"
+    },
+    "slotHint": "Verfügbar in M1",
+    "schematic": {
+      "title": "Signalweg",
+      "lead": "Der Browser spricht nie direkt mit Ihrer Infrastruktur. Ein Poller pro Verbindung speist einen gemeinsamen Cache, der an alle Clients verteilt wird.",
+      "browser": "Browser",
+      "core": "UniPanel",
+      "coreSub": "Cache · Poller",
+      "upstream": "Zielsysteme",
+      "connectors": "0 Verbindungen",
+      "resources": "0 Ressourcen"
+    },
+    "connect": {
+      "title": "Noch keine Verbindungen",
+      "lead": "Pterodactyl, Docker, Proxmox, Portainer und jede REST-API werden hier eingebunden.",
+      "cta": "Verbindung hinzufügen",
+      "ctaHint": "Die Verbindungsregistry kommt in M1"
+    }
+  },
+  "resources": {
+    "eyebrow": "Inventar",
+    "title": "Alle Ressourcen",
+    "lead": "Jeder Server, Container und jede virtuelle Maschine aus allen Verbindungen in einer Tabelle.",
+    "columns": {
+      "name": "Name",
+      "kind": "Typ",
+      "status": "Status",
+      "connector": "Verbindung",
+      "cpu": "CPU",
+      "memory": "Speicher"
+    },
+    "empty": {
+      "title": "Nichts aufzulisten",
+      "lead": "Ressourcen erscheinen, sobald eine Verbindung sie meldet. Aktionen, Konsolen und Dateien richten sich nach den Fähigkeiten der jeweiligen Verbindung."
+    },
+    "filter": "Ressourcen filtern",
+    "filterHint": "Deaktiviert, bis eine Verbindung existiert"
+  },
+  "admin": {
+    "eyebrow": "System",
+    "title": "Administration",
+    "lead": "Instanz-Einstellungen, Benutzer, Rollen und das Audit-Log.",
+    "instance": {
+      "title": "Instanz",
+      "name": "Name",
+      "locale": "Sprache",
+      "localeNote": "Fest pro Instanz. Änderbar über den CLI-Befehl admin set-locale.",
+      "version": "Serverversion",
+      "schema": "Schema",
+      "database": "Datenbank",
+      "uptime": "Laufzeit",
+      "started": "Gestartet"
+    },
+    "users": {
+      "title": "Benutzer und Rollen",
+      "lead": "RBAC, OIDC-Anbieter und Gruppen-Zuordnungen folgen mit dem Zugriffs-Meilenstein.",
+      "badge": "M4"
+    },
+    "audit": {
+      "title": "Audit-Log",
+      "lead": "Anmeldungen und Steuerungsaktionen werden bereits als Nachrichtenschlüssel erfasst. Die Ansicht folgt mit dem Zugriffs-Meilenstein.",
+      "badge": "M4"
+    }
+  },
+  "notFound": {
+    "eyebrow": "Fehler 404",
+    "title": "Seite nicht gefunden",
+    "lead": "Diese Route existiert nicht. Vielleicht ist sie mit einem späteren Meilenstein umgezogen.",
+    "back": "Zurück zu den Dashboards"
+  },
+  "errors": {
+    "request.invalid": "Die Anfrage wurde abgelehnt. Prüfen Sie die Werte und versuchen Sie es erneut.",
+    "request.not_found": "Die angeforderte Ressource existiert nicht.",
+    "request.csrf": "Ihre Sitzung konnte nicht verifiziert werden. Laden Sie die Seite neu.",
+    "auth.required": "Bitte melden Sie sich an.",
+    "auth.forbidden": "Dazu sind Sie nicht berechtigt.",
+    "auth.invalid_credentials": "Benutzername oder Passwort ist falsch.",
+    "auth.rate_limited": "Zu viele Versuche. Bitte in {retry_after} Sekunden erneut versuchen.",
+    "auth.account_disabled": "Dieses Konto ist deaktiviert.",
+    "auth.session_expired": "Ihre Sitzung ist abgelaufen. Bitte erneut anmelden.",
+    "setup.already_completed": "Diese Instanz ist bereits eingerichtet.",
+    "setup.invalid": "Einige Werte sind ungültig. Prüfen Sie das markierte Feld.",
+    "password.too_short": "Das Passwort ist zu kurz. Verwenden Sie mindestens 10 Zeichen.",
+    "password.too_common": "Dieses Passwort ist zu verbreitet oder enthält Ihren Kontonamen.",
+    "password.mismatch": "Die Passwörter stimmen nicht überein.",
+    "internal": "Auf dem Server ist ein Fehler aufgetreten. Der Vorfall wurde protokolliert."
+  }
+}
