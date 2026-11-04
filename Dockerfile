@@ -21,11 +21,11 @@ COPY --from=web /web/dist ./web/dist
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/usr/local/cargo/git \
     --mount=type=cache,target=/src/target \
-    cargo fetch 2>&1 | tail -3 || true
+    cargo fetch
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/usr/local/cargo/git \
     --mount=type=cache,target=/src/target \
-    cargo build -p unipanel-cli --release 2>&1 | tail -20
+    cargo build -p unipanel-cli --release
 RUN mkdir -p /out && cp /src/target/release/unipanel /out/unipanel
 
 # ---------- final image ----------
