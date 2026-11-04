@@ -18,6 +18,7 @@ WORKDIR /src
 RUN apk add --no-cache build-base musl-dev pkgconfig
 COPY Cargo.toml Cargo.lock ./
 COPY crates ./crates
+COPY migrations ./migrations
 COPY --from=web /web/dist ./web/dist
 RUN cargo build -p unipanel-cli --release
 RUN mkdir -p /out && cp /src/target/release/unipanel /out/unipanel
