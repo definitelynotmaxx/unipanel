@@ -20,11 +20,9 @@ COPY --from=web /web/dist ./web/dist
 # Mount cache dirs, fetch first, then build
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/usr/local/cargo/git \
-    --mount=type=cache,target=/src/target \
     cargo fetch
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/usr/local/cargo/git \
-    --mount=type=cache,target=/src/target \
     cargo build -p unipanel-cli --release
 RUN mkdir -p /out && cp /src/target/release/unipanel /out/unipanel
 
