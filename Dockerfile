@@ -10,7 +10,7 @@ COPY web ./
 RUN npm run build
 
 # ---------- rust build ----------
-FROM rust:stable-alpine AS rust
+FROM rust:1.91-alpine AS rust
 WORKDIR /src
 RUN apk add --no-cache build-base musl-dev pkgconfig
 # Separate dependency layer for cache efficiency
