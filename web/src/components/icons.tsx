@@ -2,6 +2,7 @@ import {
   ChevronLeft,
   ChevronRight,
   LayoutGrid,
+  LayoutDashboard,
   LogOut,
   Menu,
   Settings,
@@ -27,6 +28,10 @@ import {
   Terminal,
   Trash2,
   Power,
+  Plug,
+  Code,
+  TestTube2,
+  Package,
 } from 'lucide-react';
 export type { LucideProps } from 'lucide-react';
 
@@ -49,6 +54,8 @@ export {
   Database as IconDatabase,
   Cpu as IconCpu,
   HardDrive as IconHardDrive,
+  LayoutDashboard as IconLayoutDashboard,
+  Package as IconBox,
 };
 
 // ── Admin icons ──
@@ -78,4 +85,11 @@ export {
   Terminal as IconTerminal,
   Trash2 as IconTrash2,
   Power as IconPower,
+};
+
+// ── Connectors icons ──
+export {
+  Plug as IconPlug,
+  Code as IconCode,
+  TestTube2 as IconTestTube2,
 };

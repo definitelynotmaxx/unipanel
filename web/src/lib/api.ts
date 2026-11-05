@@ -134,6 +134,21 @@ export const api = {
   health(): Promise<HealthResponse> {
     return request<HealthResponse>('/system/health');
   },
+
+  /** Generic GET helper for ad-hoc endpoints. */
+  get<T>(path: string): Promise<T> {
+    return request<T>(path);
+  },
+
+  /** Generic POST helper for ad-hoc endpoints. */
+  post<T>(path: string, body: unknown): Promise<T> {
+    return request<T>(path, { method: 'POST', body });
+  },
+
+  /** Generic DELETE helper for ad-hoc endpoints. */
+  delete<T>(path: string): Promise<T> {
+    return request<T>(path, { method: 'POST', body: {} });
+  },
 };
 
 /** Query keys in one place so invalidation stays consistent. */

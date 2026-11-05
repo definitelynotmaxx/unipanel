@@ -132,6 +132,68 @@ pub struct HealthResponse {
     pub database_ok: bool,
 }
 
+/// Connector configuration as exposed over HTTP.
+#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
+pub struct ConnectorResponse {
+    /// Connector id.
+    pub id: String,
+    /// Human-readable name.
+    pub name: String,
+    /// Panel kind (`pterodactyl`, `docker`, `proxmox`, `rest`).
+    pub kind: String,
+    /// Base API URL.
+    pub api_url: String,
+    /// Whether the connector is enabled.
+    pub is_active: bool,
+    /// Creation timestamp (RFC 3339).
+    pub created_at: String,
+}
+
+/// Create or update a connector.
+#[derive(Debug, Clone, Deserialize, ToSchema)]
+pub struct ConnectorRequest {
+    /// Human-readable name.
+    pub name: String,
+    /// Panel kind.
+    pub kind: String,
+    /// Base API URL.
+    pub api_url: String,
+    /// API key (sent as plaintext over TLS).
+    pub api_key: String,
+    /// Whether to enable the connector.
+    #[serde(default)]
+    pub is_active: bool,
+}
+
+/// Test payload: a connector configuration without stored identity.
+#[derive(Debug, Clone, Deserialize, ToSchema)]
+pub struct ConnectorTestRequest {
+    /// Panel kind.
+    pub kind: String,
+    /// Base API URL.
+    pub api_url: String,
+    /// API key to test.
+    pub api_key: String,
+}
+
+/// Result of a connection test.
+#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
+pub struct ConnectorTestResponse {
+    /// Whether the connection succeeded.
+    pub ok: bool,
+    /// Round-trip latency in milliseconds.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub latency_ms: Option<u64>,
+    /// Human-readable summary.
+    pub message: String,
+    /// Connector-specific details (status, version, etc.).
+    #[serde(
+        default,
+        skip_serializing_if = "serde_json::Value::is_null"
+    )]
+    pub details: serde_json::Value,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

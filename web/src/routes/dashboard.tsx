@@ -1,4 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
+import {
+  IconBox,
+  IconDatabase,
+  IconLayoutDashboard,
+  IconServer,
+  IconSettings,
+} from '@/components/icons';
 import { bootstrapQuery, infoQuery, healthQuery } from '@/lib/queries';
 
 export function DashboardPage() {
@@ -13,65 +20,75 @@ export function DashboardPage() {
   const startedAt = info.data?.started_at;
   const uptimeSeconds = info.data?.uptime_seconds ?? health.data?.uptime_seconds ?? 0;
   const dbOk = health.data?.database_ok ?? false;
+  const authenticated = bootstrap.data?.authenticated ?? false;
 
   return (
-    <div className="space-y-5 animate-in">
-      {/* ── Title ── */}
+    <div className="space-y-6">
+      {/* Title */}
       <div>
-        <h1 className="heading-lg">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
         <p className="text-sm text-gray-500 mt-1">
           Instance: {instanceName} · {version}
         </p>
       </div>
 
-      {/* ── Top stats row ── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* Stats row */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          icon={<span className="text-xl">📦</span>}
+          icon={<IconBox className="w-5 h-5" />}
           label="Version"
           value={version}
+          color="blue"
         />
         <StatCard
-          icon={<span className="text-xl">{dbOk ? '✅' : '❌'}</span>}
+          icon={<IconDatabase className="w-5 h-5" />}
           label="Database"
           value={dbOk ? 'Connected' : 'Disconnected'}
           color={dbOk ? 'green' : 'red'}
         />
         <StatCard
-          icon={<span className="text-xl">⚙️</span>}
+          icon={<IconSettings className="w-5 h-5" />}
           label="Schema"
           value={schemaVersion != null ? `v${schemaVersion}` : '—'}
+          color="purple"
         />
         <StatCard
-          icon={<span className="text-xl">🗄️</span>}
-          label="Database"
-          value={database}
+          icon={<IconServer className="w-5 h-5" />}
+          label="Auth"
+          value={authenticated ? 'Active' : 'Inactive'}
+          color={authenticated ? 'green' : 'amber'}
         />
       </div>
 
-      {/* ── Main content + System info ── */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
+      {/* Main content with tabs */}
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* Left: Status + Monitoring */}
-        <div className="xl:col-span-2 space-y-5">
-          {/* Status section */}
-          <div className="card p-5">
-            <h2 className="text-sm font-semibold text-gray-800 mb-4">Status</h2>
+        <div className="xl:col-span-2 space-y-6">
+          {/* Status tab */}
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <h2 className="text-sm font-semibold text-gray-800 mb-5">Status</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
               <Gauge value={dbOk ? 100 : 0} label="Database" color="green" />
-              <Gauge value={bootstrap.data?.authenticated ? 100 : 50} label="Auth" color={bootstrap.data?.authenticated ? 'green' : 'yellow'} />
-              <Gauge value={info.data?.uptime_seconds && info.data.uptime_seconds > 0 ? 100 : 0} label="Uptime" color="blue" />
+              <Gauge value={authenticated ? 100 : 50} label="Auth" color={authenticated ? 'green' : 'amber'} />
+              <Gauge value={uptimeSeconds > 0 ? 100 : 0} label="Uptime" color="blue" />
               <Gauge value={100} label="System" color="blue" />
             </div>
           </div>
 
-          {/* Monitoring */}
-          <div className="card p-5">
-            <div className="flex items-center justify-between mb-4">
+          {/* Monitoring tab */}
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <div className="flex items-center justify-between mb-5">
               <h2 className="text-sm font-semibold text-gray-800">Monitoring</h2>
-              <div className="flex gap-2">
-                <button className="btn btn-sm bg-blue-50 text-blue-600 border-blue-200">CPU</button>
-                <button className="btn btn-sm">Memory</button>
-                <button className="btn btn-sm">Network</button>
+              <div className="flex gap-1.5">
+                <button className="px-3 py-1.5 text-xs font-medium rounded-md bg-blue-50 text-blue-600 border border-blue-200">
+                  CPU
+                </button>
+                <button className="px-3 py-1.5 text-xs font-medium rounded-md bg-white text-gray-600 border border-gray-200 hover:bg-gray-50">
+                  Memory
+                </button>
+                <button className="px-3 py-1.5 text-xs font-medium rounded-md bg-white text-gray-600 border border-gray-200 hover:bg-gray-50">
+                  Network
+                </button>
               </div>
             </div>
             <div className="h-48 flex items-end justify-between gap-1 px-2">
@@ -90,8 +107,8 @@ export function DashboardPage() {
         </div>
 
         {/* Right: System info */}
-        <div className="card p-5">
-          <h2 className="text-sm font-semibold text-gray-800 mb-4">System Information</h2>
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <h2 className="text-sm font-semibold text-gray-800 mb-5">System Information</h2>
           <dl className="space-y-3 text-sm">
             <SystemInfoRow label="Hostname" value={instanceName} />
             <SystemInfoRow label="Version" value={version} />
@@ -105,11 +122,11 @@ export function DashboardPage() {
 
           {/* Applications section */}
           <div className="mt-6 pt-4 border-t border-gray-100">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
               Applications
             </h3>
             <div className="space-y-2">
-              <EmptyAppCard label="No apps configured" desc="Connect resources to see them here." />
+              <EmptyAppCard />
             </div>
           </div>
         </div>
@@ -127,24 +144,29 @@ function StatCard({
   icon: React.ReactNode;
   label: string;
   value: string;
-  color?: 'green' | 'red' | 'blue' | 'yellow';
+  color: string;
 }) {
   const colorMap: Record<string, string> = {
-    green: 'bg-green-50 border-green-200',
-    red: 'bg-red-50 border-red-200',
-    blue: 'bg-blue-50 border-blue-200',
-    yellow: 'bg-yellow-50 border-yellow-200',
+    green: 'bg-green-50 border-green-200 text-green-700',
+    red: 'bg-red-50 border-red-200 text-red-700',
+    blue: 'bg-blue-50 border-blue-200 text-blue-700',
+    amber: 'bg-amber-50 border-amber-200 text-amber-700',
+    purple: 'bg-purple-50 border-purple-200 text-purple-700',
   };
 
+  const style = colorMap[color] || colorMap.blue;
+
   return (
-    <div className={`stat-card ${color ? colorMap[color] : ''}`}>
-      <div className="flex items-center gap-2 mb-2">
-        <span>{icon}</span>
-        <span className="text-[11px] font-medium text-gray-500 uppercase tracking-wider">
+    <div className={`rounded-xl border p-5 transition-shadow hover:shadow-sm ${(style || '').split(' ').slice(2).join(' ')}`}>
+      <div className="flex items-center gap-3 mb-3">
+        <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${style}`}>
+          {icon}
+        </div>
+        <span className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
           {label}
         </span>
       </div>
-      <span className="text-[22px] font-bold">{value}</span>
+      <span className="text-2xl font-bold text-gray-900">{value}</span>
     </div>
   );
 }
@@ -159,13 +181,13 @@ function Gauge({ value, label, color }: { value: number; label: string; color: s
   const colorMap: Record<string, string> = {
     green: '#10b981',
     blue: '#3b82f6',
-    yellow: '#f59e0b',
+    amber: '#f59e0b',
     red: '#ef4444',
   };
   const strokeColor = colorMap[color] || '#3b82f6';
 
   return (
-    <div className="gauge">
+    <div className="flex flex-col items-center">
       <div className="relative">
         <svg width={radius * 2 + stroke * 2} height={radius * 2 + stroke * 2}>
           <circle
@@ -173,7 +195,7 @@ function Gauge({ value, label, color }: { value: number; label: string; color: s
             cy={radius + stroke}
             r={radius}
             fill="none"
-            stroke="#f0f0f0"
+            stroke="#f3f4f6"
             strokeWidth={stroke}
           />
           <circle
@@ -190,10 +212,10 @@ function Gauge({ value, label, color }: { value: number; label: string; color: s
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-[13px] font-bold text-gray-800">{normalized}%</span>
+          <span className="text-sm font-bold text-gray-900">{normalized}%</span>
         </div>
       </div>
-      <span className="text-xs text-gray-500 font-medium">{label}</span>
+      <span className="text-xs text-gray-500 font-medium mt-2">{label}</span>
     </div>
   );
 }
@@ -202,19 +224,19 @@ function SystemInfoRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between items-baseline">
       <dt className="text-xs text-gray-500 font-medium">{label}</dt>
-      <dd className="text-xs text-gray-700 font-mono">{value}</dd>
+      <dd className="text-xs text-gray-800 font-mono">{value}</dd>
     </div>
   );
 }
 
-function EmptyAppCard({ label, desc }: { label: string; desc: string }) {
+function EmptyAppCard() {
   return (
-    <div className="empty-state py-3">
-      <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-400">
-        <span className="text-lg">📋</span>
+    <div className="text-center py-6">
+      <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center mx-auto mb-3">
+        <IconLayoutDashboard className="w-5 h-5 text-gray-400" />
       </div>
-      <p className="text-sm font-semibold text-gray-700">{label}</p>
-      <p className="text-xs text-gray-400">{desc}</p>
+      <p className="text-sm font-semibold text-gray-700">No apps configured</p>
+      <p className="text-xs text-gray-400 mt-1">Connect resources to see them here.</p>
     </div>
   );
 }

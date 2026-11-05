@@ -14,10 +14,10 @@ export function SetupPage() {
   const navigate = useNavigate();
 
   const [locale, setLocale] = useState('en');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [displayName, setDisplayName] = useState('');
-  const [instanceName, setInstanceName] = useState('');
+  const [username, setUsername] = useState('unipanel');
+  const [password, setPassword] = useState('unipanel');
+  const [displayName, setDisplayName] = useState('Unipanel Admin');
+  const [instanceName, setInstanceName] = useState('UniPanel');
 
   const setup = useMutation({
     mutationFn: (payload: {

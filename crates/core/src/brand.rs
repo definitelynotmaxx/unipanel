@@ -47,7 +47,7 @@ pub const fn version() -> &'static str {
 ///
 /// The value mirrors the highest migration number in `migrations/` and is
 /// reported by `/healthz` variants and the CLI `doctor` command.
-pub const SCHEMA_VERSION: i64 = 1;
+pub const SCHEMA_VERSION: i64 = 2;
 
 #[cfg(test)]
 mod tests {

@@ -6,12 +6,14 @@
 //! depend on any SQLx-specific date encoding.
 
 pub mod audit;
+pub mod connectors;
 pub mod db;
 pub mod sessions;
 pub mod settings;
 pub mod time;
 pub mod users;
 
+pub use connectors::{Connector, ConnectorError, ConnectorInsert};
 pub use db::{Db, StorageError};
 pub use sessions::{NewSession, Session, SessionWithUser};
 pub use settings::InstanceSetup;

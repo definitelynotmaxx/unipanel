@@ -2,12 +2,13 @@
 
 pub mod auth;
 pub mod bootstrap;
+pub mod connector;
 pub mod session;
 pub mod setup;
 pub mod system;
 
 use axum::Json;
-use axum::routing::{get, post};
+use axum::routing::{delete, get, post};
 use utoipa::OpenApi as _;
 
 use crate::error::{ApiErrorBody, ApiErrorPayload};
@@ -23,6 +24,9 @@ pub fn routes() -> axum::Router<AppState> {
         .route("/auth/session", get(auth::session))
         .route("/system/health", get(system::health))
         .route("/system/info", get(system::info))
+        .route("/connectors", get(connector::list).post(connector::create))
+        .route("/connectors/test", post(connector::test))
+        .route("/connectors/{id}", delete(connector::delete))
         .route("/openapi.json", get(openapi))
 }
 
@@ -42,7 +46,11 @@ pub fn routes() -> axum::Router<AppState> {
         auth::logout,
         auth::session,
         system::health,
-        system::info
+        system::info,
+        connector::list,
+        connector::create,
+        connector::delete,
+        connector::test
     ),
     components(schemas(
         crate::dto::BootstrapResponse,
@@ -52,6 +60,10 @@ pub fn routes() -> axum::Router<AppState> {
         crate::dto::UserDto,
         crate::dto::SystemInfoResponse,
         crate::dto::HealthResponse,
+        crate::dto::ConnectorResponse,
+        crate::dto::ConnectorRequest,
+        crate::dto::ConnectorTestRequest,
+        crate::dto::ConnectorTestResponse,
         ApiErrorBody,
         ApiErrorPayload
     ))

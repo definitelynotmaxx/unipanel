@@ -9,6 +9,7 @@ import {
   IconGrid,
   IconLogout,
   IconMenu,
+  IconPlug,
   IconServer,
   IconSettings,
 } from '@/components/icons';
@@ -28,6 +29,7 @@ interface NavItem {
 const NAV: NavItem[] = [
   { to: '/', labelKey: 'nav.dashboards', icon: IconGrid, exact: true },
   { to: '/resources', labelKey: 'nav.resources', icon: IconServer },
+  { to: '/connectors', labelKey: 'nav.connectors', icon: IconPlug },
   { to: '/admin', labelKey: 'nav.admin', icon: IconSettings },
 ];
 

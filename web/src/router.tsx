@@ -2,6 +2,7 @@ import { createRootRoute, createRoute, createRouter, Outlet } from '@tanstack/re
 
 import { AppShell } from '@/components/AppShell';
 import { AdminPage } from '@/routes/admin';
+import { ConnectorPage } from '@/routes/connectors';
 import { DashboardPage } from '@/routes/dashboard';
 import { LoginPage } from '@/routes/login';
 import { ResourcesPage } from '@/routes/resources';
@@ -48,10 +49,16 @@ const adminRoute = createRoute({
   component: AdminPage,
 });
 
+const connectorsRoute = createRoute({
+  getParentRoute: () => appRoute,
+  path: 'connectors',
+  component: ConnectorPage,
+});
+
 const routeTree = rootRoute.addChildren([
   setupRoute,
   loginRoute,
-  appRoute.addChildren([dashboardRoute, resourcesRoute, adminRoute]),
+  appRoute.addChildren([dashboardRoute, resourcesRoute, connectorsRoute, adminRoute]),
 ]);
 
 export const router = createRouter({

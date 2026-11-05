@@ -2507,6 +2507,7 @@ version = "0.0.0"
 dependencies = [
  "axum",
  "axum-extra",
+ "base64",
  "http-body-util",
  "mime_guess",
  "rust-embed",
@@ -2523,6 +2524,7 @@ dependencies = [
  "unipanel-core",
  "unipanel-crypto",
  "unipanel-storage",
+ "url",
  "utoipa",
  "uuid",
 ]

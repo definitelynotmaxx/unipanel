@@ -1,4 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
+import {
+  IconClock,
+  IconDatabase,
+  IconGlobe,
+  IconKey,
+  IconPlug,
+} from '@/components/icons';
+
 import { bootstrapQuery, infoQuery } from '@/lib/queries';
 
 export function AdminPage() {
@@ -13,33 +21,57 @@ export function AdminPage() {
   const locale = info.data?.locale ?? bootstrap.data?.locale ?? 'en';
 
   return (
-    <div className="space-y-5 animate-in">
-      {/* ── Title ── */}
+    <div className="space-y-6">
+      {/* Title */}
       <div>
-        <h1 className="heading-lg">Administration</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Administration</h1>
         <p className="text-sm text-gray-500 mt-1">
           Instance settings, security, and connectors
         </p>
       </div>
 
-      {/* ── Instance info ── */}
-      <div className="card p-6">
-        <h2 className="text-sm font-semibold text-gray-800 mb-4">Instance</h2>
+      {/* Instance info */}
+      <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <h2 className="text-sm font-semibold text-gray-800 mb-5">Instance</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4">
-          <InfoRow label="Name" value={instanceName} />
-          <InfoRow label="Language" value={locale} />
-          <InfoRow label="Version" value={version} />
-          <InfoRow label="Schema" value={schemaVersion != null ? `v${schemaVersion}` : '—'} />
-          <InfoRow label="Database" value={database} />
-          <InfoRow label="Started" value={startedAt ? new Date(startedAt).toLocaleString() : '—'} />
+          <InfoRow
+            icon={<IconGlobe className="w-4 h-4" />}
+            label="Name"
+            value={instanceName}
+          />
+          <InfoRow
+            icon={<IconGlobe className="w-4 h-4" />}
+            label="Language"
+            value={locale}
+          />
+          <InfoRow
+            icon={<IconKey className="w-4 h-4" />}
+            label="Version"
+            value={version}
+          />
+          <InfoRow
+            icon={<IconDatabase className="w-4 h-4" />}
+            label="Schema"
+            value={schemaVersion != null ? `v${schemaVersion}` : '—'}
+          />
+          <InfoRow
+            icon={<IconDatabase className="w-4 h-4" />}
+            label="Database"
+            value={database}
+          />
+          <InfoRow
+            icon={<IconClock className="w-4 h-4" />}
+            label="Started"
+            value={startedAt ? new Date(startedAt).toLocaleString() : '—'}
+          />
         </div>
       </div>
 
-      {/* ── Security + Connectors ── */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
+      {/* Security + Connectors */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {/* Security */}
-        <div className="card p-6">
-          <h2 className="text-sm font-semibold text-gray-800 mb-4">Security</h2>
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <h2 className="text-sm font-semibold text-gray-800 mb-5">Security</h2>
           <div className="space-y-3">
             <SecurityRow label="CSRF Protection" status="active" />
             <SecurityRow label="Session Security" status="active" />
@@ -48,15 +80,15 @@ export function AdminPage() {
         </div>
 
         {/* Connectors */}
-        <div className="card p-6">
-          <h2 className="text-sm font-semibold text-gray-800 mb-4">Connectors</h2>
-          <div className="empty-state">
-            <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center text-gray-400">
-              <span className="text-2xl">🔌</span>
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <h2 className="text-sm font-semibold text-gray-800 mb-5">Connectors</h2>
+          <div className="text-center py-8">
+            <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center mx-auto mb-4">
+              <IconPlug className="w-6 h-6 text-gray-400" />
             </div>
-            <p className="text-sm font-semibold text-gray-700">No connectors configured</p>
-            <p className="text-xs text-gray-400 max-w-[300px]">
-              Add connectors in the connectors tab to manage resources from Docker, Pterodactyl, Proxmox and more.
+            <p className="text-sm font-semibold text-gray-700 mb-2">No connectors configured</p>
+            <p className="text-xs text-gray-400 max-w-[300px] mx-auto">
+              Add connectors to manage resources from Docker, Pterodactyl, Proxmox and more.
             </p>
           </div>
         </div>
@@ -65,13 +97,26 @@ export function AdminPage() {
   );
 }
 
-function InfoRow({ label, value }: { label: string; value: string }) {
+function InfoRow({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}) {
   return (
-    <div>
-      <dt className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">
-        {label}
-      </dt>
-      <dd className="text-[14px] text-gray-800 font-mono">{value}</dd>
+    <div className="flex items-start gap-3">
+      <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500 mt-0.5">
+        {icon}
+      </div>
+      <div>
+        <dt className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">
+          {label}
+        </dt>
+        <dd className="text-[14px] text-gray-800 font-mono">{value}</dd>
+      </div>
     </div>
   );
 }
@@ -86,7 +131,7 @@ function SecurityRow({
   status: 'active' | 'inactive';
 }) {
   return (
-    <div className="flex items-center justify-between py-1">
+    <div className="flex items-center justify-between py-2">
       <span className="text-sm text-gray-600">{label}</span>
       <div className="flex items-center gap-2">
         {value && <span className="text-xs text-gray-500 font-mono">{value}</span>}
