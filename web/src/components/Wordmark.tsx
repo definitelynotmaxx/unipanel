@@ -18,12 +18,12 @@ export function Wordmark({ glyphOnly = false, subtitle, className }: WordmarkPro
       {!glyphOnly && (
         <span className="flex flex-col leading-none">
           <span
-            className="display text-[19px] tracking-[0.06em] text-paper"
-            style={{ fontStretch: 'semi-expanded' }}
+            className="tracking-[0.08em] text-[17px] font-medium text-text-primary"
+            style={{ fontFamily: 'var(--font-display)' }}
           >
             UNIPANEL
           </span>
-          <span className="eyebrow mt-[5px] text-[8px] text-muted">
+          <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-text-muted mt-[3px]">
             {subtitle ?? `v${boot.version}`}
           </span>
         </span>
@@ -41,16 +41,16 @@ export function Glyph({ size = 30 }: { size?: number }) {
       viewBox="0 0 32 32"
       aria-hidden="true"
       className="shrink-0"
-      style={{ color: 'var(--color-paper)' }}
     >
-      <rect x="0.5" y="0.5" width="31" height="31" fill="none" stroke="rgba(239,235,225,0.22)" />
+      <rect x="0.5" y="0.5" width="31" height="31" fill="none" stroke="rgba(228,232,239,0.15)" />
       <path
         d="M9 8v10.5a4.5 4.5 0 0 0 4.5 4.5h5a4.5 4.5 0 0 0 4.5-4.5V8"
         fill="none"
         stroke="currentColor"
         strokeWidth="1.7"
+        style={{ color: 'var(--color-text-primary)' }}
       />
-      <rect x="22.5" y="4.5" width="5" height="5" fill="var(--color-sodium)" />
+      <rect x="22.5" y="4.5" width="5" height="5" fill="var(--color-accent)" />
     </svg>
   );
 }

@@ -17,7 +17,6 @@ export function LoginPage() {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [capsLock, setCapsLock] = useState(false);
 
   const login = useMutation({
     mutationFn: api.login,
@@ -40,26 +39,17 @@ export function LoginPage() {
       eyebrow={t('login.eyebrow')}
       headline={
         <>
-          One console.
-          <br />
+          One console.<br />
           <span className="text-sodium">Every</span> machine.
         </>
       }
       lead={t('login.lead')}
-      footer={
-        <span className="mono text-[8px] uppercase tracking-[0.2em] text-line-strong">
-          LOCAL ACCOUNT
-        </span>
-      }
     >
-      <div className="panel ticks p-7 sm:p-8">
+      <div className="card p-6 sm:p-8">
         <AuthHeading
           eyebrow={instanceName}
           title={t('login.title')}
           lead={t('login.lead')}
-          aside={
-            <span className="mono text-[8px] uppercase tracking-[0.18em] text-muted">01 / 01</span>
-          }
         />
 
         <form onSubmit={onSubmit} noValidate>
@@ -67,10 +57,9 @@ export function LoginPage() {
             <Field label={t('login.username')} htmlFor="username">
               <input
                 id="username"
-                name="username"
                 className="input"
                 value={username}
-                onChange={(event) => setUsername(event.target.value)}
+                onChange={(e) => setUsername(e.target.value)}
                 placeholder={t('login.usernamePlaceholder')}
                 autoComplete="username"
                 autoCapitalize="none"
@@ -84,23 +73,14 @@ export function LoginPage() {
             <Field label={t('login.password')} htmlFor="password">
               <PasswordInput
                 id="password"
-                name="password"
                 value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                onKeyUp={(event) => setCapsLock(event.getModifierState?.('CapsLock') ?? false)}
-                onKeyDown={(event) => setCapsLock(event.getModifierState?.('CapsLock') ?? false)}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder={t('login.passwordPlaceholder')}
                 autoComplete="current-password"
                 required
-                invalid={Boolean(login.error)}
+                invalid={!!login.error}
               />
             </Field>
-
-            {capsLock && (
-              <p className="mono text-[9px] uppercase tracking-[0.16em] text-amber">
-                {t('login.capsLock')}
-              </p>
-            )}
 
             {login.error && <Alert>{errorMessage(login.error)}</Alert>}
           </div>
@@ -108,16 +88,16 @@ export function LoginPage() {
           <button
             type="submit"
             className="btn btn-primary btn-block mt-6"
-            disabled={login.isPending || username.length === 0 || password.length === 0}
+            disabled={login.isPending || !username || !password}
           >
             {login.isPending ? t('login.submitting') : t('login.submit')}
-            <IconArrowRight width={16} height={16} className={login.isPending ? 'opacity-40' : ''} />
+            <IconArrowRight className="h-4 w-4 opacity-60" />
           </button>
         </form>
 
-        <div className="mt-6 flex items-center gap-3 border-t border-line pt-4">
-          <IconShield width={13} height={13} className="text-muted" />
-          <p className="mono text-[8.5px] uppercase tracking-[0.14em] text-muted">
+        <div className="mt-6 flex items-center gap-3 pt-4 border-t border-border">
+          <IconShield className="h-3.5 w-3.5 text-text-muted shrink-0" />
+          <p className="text-[10px] text-text-muted leading-relaxed">
             {t('login.footer')}
           </p>
         </div>
