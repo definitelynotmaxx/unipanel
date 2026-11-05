@@ -1,88 +1,101 @@
 import { useQuery } from '@tanstack/react-query';
-
-import { EmptyState } from '@/components/EmptyState';
-import { t } from '@/lib/i18n';
 import { bootstrapQuery, infoQuery } from '@/lib/queries';
 
 export function AdminPage() {
   const bootstrap = useQuery(bootstrapQuery);
   const info = useQuery({ ...infoQuery, enabled: !!bootstrap.data?.authenticated });
 
-  const instanceName = info.data?.instance_name ?? bootstrap.data?.instance_name ?? '';
-  const database = info.data?.database;
+  const version = bootstrap.data?.version ?? '—';
+  const instanceName = bootstrap.data?.instance_name ?? 'UniPanel';
+  const database = info.data?.database ?? '—';
   const schemaVersion = info.data?.schema_version;
-  const locale = info.data?.locale ?? bootstrap.data?.locale ?? 'en';
-  const version = bootstrap.data?.version;
   const startedAt = info.data?.started_at;
+  const locale = info.data?.locale ?? bootstrap.data?.locale ?? 'en';
 
   return (
-    <div className="space-y-6 animate-in">
-      {/* Page header */}
-      <div className="section-header">
-        <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-text-muted mb-1">
-            {t('admin.eyebrow')}
-          </p>
-          <h1 className="heading-lg">{t('admin.title')}</h1>
+    <div className="space-y-5 animate-in">
+      {/* ── Title ── */}
+      <div>
+        <h1 className="heading-lg">Administration</h1>
+        <p className="text-sm text-gray-500 mt-1">
+          Instance settings, security, and connectors
+        </p>
+      </div>
+
+      {/* ── Instance info ── */}
+      <div className="card p-6">
+        <h2 className="text-sm font-semibold text-gray-800 mb-4">Instance</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4">
+          <InfoRow label="Name" value={instanceName} />
+          <InfoRow label="Language" value={locale} />
+          <InfoRow label="Version" value={version} />
+          <InfoRow label="Schema" value={schemaVersion != null ? `v${schemaVersion}` : '—'} />
+          <InfoRow label="Database" value={database} />
+          <InfoRow label="Started" value={startedAt ? new Date(startedAt).toLocaleString() : '—'} />
         </div>
       </div>
 
-      {/* Instance config */}
-      <div className="card p-5">
-        <h2 className="heading-sm mb-4">{t('admin.instance.title')}</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-3">
-          <ConfigRow label={t('admin.instance.name')} value={instanceName || '—'} />
-          <ConfigRow label={t('admin.instance.locale')} value={locale} />
-          <ConfigRow label={t('admin.instance.version')} value={version ?? '—'} />
-          <ConfigRow label={t('admin.instance.schema')} value={schemaVersion != null ? `v${schemaVersion}` : '—'} />
-          <ConfigRow label={t('admin.instance.database')} value={database ?? '—'} />
-          <ConfigRow label={t('admin.instance.started')} value={startedAt ? new Date(startedAt).toLocaleString() : '—'} />
-        </div>
-      </div>
-
-      {/* System status */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="card p-5">
-          <h2 className="heading-sm mb-4">Security</h2>
+      {/* ── Security + Connectors ── */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
+        {/* Security */}
+        <div className="card p-6">
+          <h2 className="text-sm font-semibold text-gray-800 mb-4">Security</h2>
           <div className="space-y-3">
-            <SecurityItem label="CSRF Protection" status="active" />
-            <SecurityItem label="Session Security" status="active" />
-            <SecurityItem label="Password Hashing" status="active" value="Argon2id" />
+            <SecurityRow label="CSRF Protection" status="active" />
+            <SecurityRow label="Session Security" status="active" />
+            <SecurityRow label="Password Hashing" value="Argon2id" status="active" />
           </div>
         </div>
 
-        <div className="card p-5">
-          <h2 className="heading-sm mb-4">Connectors</h2>
-          <EmptyState
-            icon="Server"
-            title="No connectors configured"
-            description="Add connectors in the connectors tab to manage resources from Docker, Pterodactyl, Proxmox and more."
-          />
+        {/* Connectors */}
+        <div className="card p-6">
+          <h2 className="text-sm font-semibold text-gray-800 mb-4">Connectors</h2>
+          <div className="empty-state">
+            <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center text-gray-400">
+              <span className="text-2xl">🔌</span>
+            </div>
+            <p className="text-sm font-semibold text-gray-700">No connectors configured</p>
+            <p className="text-xs text-gray-400 max-w-[300px]">
+              Add connectors in the connectors tab to manage resources from Docker, Pterodactyl, Proxmox and more.
+            </p>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-function ConfigRow({ label, value }: { label: string; value: string }) {
+function InfoRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex flex-col py-1">
-      <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-text-muted">
+    <div>
+      <dt className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">
         {label}
-      </span>
-      <span className="text-[14px] text-text-primary font-mono">{value}</span>
+      </dt>
+      <dd className="text-[14px] text-gray-800 font-mono">{value}</dd>
     </div>
   );
 }
 
-function SecurityItem({ label, status, value }: { label: string; status: 'active' | 'inactive'; value?: string }) {
+function SecurityRow({
+  label,
+  value,
+  status,
+}: {
+  label: string;
+  value?: string;
+  status: 'active' | 'inactive';
+}) {
   return (
-    <div className="flex items-center justify-between">
-      <span className="text-[13px] text-text-secondary">{label}</span>
+    <div className="flex items-center justify-between py-1">
+      <span className="text-sm text-gray-600">{label}</span>
       <div className="flex items-center gap-2">
-        {value && <span className="mono text-[12px] text-text-primary">{value}</span>}
+        {value && <span className="text-xs text-gray-500 font-mono">{value}</span>}
         <span
-          className={`badge ${status === 'active' ? 'badge-online' : 'badge-offline'}`}
+          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${
+            status === 'active'
+              ? 'bg-green-100 text-green-700'
+              : 'bg-gray-100 text-gray-500'
+          }`}
         >
           {status === 'active' ? 'Active' : 'Inactive'}
         </span>

@@ -4,7 +4,7 @@ import { useState, type FormEvent } from 'react';
 
 import { AuthHeading, AuthLayout } from '@/components/AuthLayout';
 import { Alert, Field } from '@/components/form';
-import { IconArrowRight, IconShield } from '@/components/icons';
+import { IconArrowRight } from '@/components/icons';
 import { api, queryKeys } from '@/lib/api';
 import { errorMessage } from '@/lib/errors';
 import { t } from '@/lib/i18n';
@@ -48,24 +48,19 @@ export function SetupPage() {
   return (
     <AuthLayout
       eyebrow={t('setup.eyebrow')}
-      headline={
-        <>
-          First run.<br />
-          <span className="text-sodium">Set it up.</span>
-        </>
-      }
-      lead={t('setup.account.lead')}
+      headline="First run"
+      lead="Create your administrator account."
     >
-      <div className="card p-6 sm:p-8">
+      <div className="card p-6 sm:p-8 shadow-sm">
         <AuthHeading
           eyebrow={t('setup.eyebrow')}
-          title={t('setup.account.title')}
-          lead={t('setup.account.lead')}
+          title="Create administrator"
+          lead="This account owns the instance."
         />
 
         <form onSubmit={onSubmit} noValidate>
           <div className="space-y-4">
-            <Field label={t('setup.locale')} htmlFor="locale">
+            <Field label="Language" htmlFor="locale">
               <select
                 id="locale"
                 className="input"
@@ -77,7 +72,7 @@ export function SetupPage() {
               </select>
             </Field>
 
-            <Field label={t('setup.username')} htmlFor="setup-username">
+            <Field label="Username" htmlFor="setup-username">
               <input
                 id="setup-username"
                 className="input"
@@ -89,35 +84,35 @@ export function SetupPage() {
               />
             </Field>
 
-            <Field label={t('setup.password')} htmlFor="setup-password">
+            <Field label="Password" htmlFor="setup-password">
               <input
                 id="setup-password"
                 className="input"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder={t('setup.account.passwordHint')}
+                placeholder="At least 10 characters"
                 required
               />
             </Field>
 
-            <Field label={t('setup.displayName')} htmlFor="setup-display">
+            <Field label="Display name" htmlFor="setup-display" optional>
               <input
                 id="setup-display"
                 className="input"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
-                placeholder={t('setup.account.displayNamePlaceholder')}
+                placeholder="Ada Lovelace"
               />
             </Field>
 
-            <Field label={t('setup.instanceName')} htmlFor="setup-instance">
+            <Field label="Instance name" htmlFor="setup-instance" optional>
               <input
                 id="setup-instance"
                 className="input"
                 value={instanceName}
                 onChange={(e) => setInstanceName(e.target.value)}
-                placeholder={t('setup.instanceNamePlaceholder')}
+                placeholder="Homelab"
               />
             </Field>
 
@@ -133,13 +128,6 @@ export function SetupPage() {
             <IconArrowRight className="h-4 w-4 opacity-60" />
           </button>
         </form>
-
-        <div className="mt-6 flex items-center gap-3 pt-4 border-t border-border">
-          <IconShield className="h-3.5 w-3.5 text-text-muted shrink-0" />
-          <p className="text-[10px] text-text-muted leading-relaxed">
-            Your instance is secured with Argon2id password hashing.
-          </p>
-        </div>
       </div>
     </AuthLayout>
   );

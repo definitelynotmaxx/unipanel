@@ -4,7 +4,7 @@ import { useState, type FormEvent } from 'react';
 
 import { AuthHeading, AuthLayout } from '@/components/AuthLayout';
 import { Alert, Field, PasswordInput } from '@/components/form';
-import { IconArrowRight, IconShield } from '@/components/icons';
+import { IconArrowRight } from '@/components/icons';
 import { api, queryKeys } from '@/lib/api';
 import { errorMessage } from '@/lib/errors';
 import { t } from '@/lib/i18n';
@@ -37,19 +37,14 @@ export function LoginPage() {
   return (
     <AuthLayout
       eyebrow={t('login.eyebrow')}
-      headline={
-        <>
-          One console.<br />
-          <span className="text-sodium">Every</span> machine.
-        </>
-      }
-      lead={t('login.lead')}
+      headline="Sign in"
+      lead="Authenticate to reach the control plane."
     >
-      <div className="card p-6 sm:p-8">
+      <div className="card p-6 sm:p-8 shadow-sm">
         <AuthHeading
           eyebrow={instanceName}
-          title={t('login.title')}
-          lead={t('login.lead')}
+          title="Sign in"
+          lead="Enter your credentials to continue."
         />
 
         <form onSubmit={onSubmit} noValidate>
@@ -60,7 +55,7 @@ export function LoginPage() {
                 className="input"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder={t('login.usernamePlaceholder')}
+                placeholder="admin"
                 autoComplete="username"
                 autoCapitalize="none"
                 autoCorrect="off"
@@ -75,7 +70,7 @@ export function LoginPage() {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder={t('login.passwordPlaceholder')}
+                placeholder="Enter your password"
                 autoComplete="current-password"
                 required
                 invalid={!!login.error}
@@ -95,12 +90,9 @@ export function LoginPage() {
           </button>
         </form>
 
-        <div className="mt-6 flex items-center gap-3 pt-4 border-t border-border">
-          <IconShield className="h-3.5 w-3.5 text-text-muted shrink-0" />
-          <p className="text-[10px] text-text-muted leading-relaxed">
-            {t('login.footer')}
-          </p>
-        </div>
+        <p className="mt-4 text-center text-[10px] text-gray-400">
+          Sessions expire after 30 days of inactivity.
+        </p>
       </div>
     </AuthLayout>
   );

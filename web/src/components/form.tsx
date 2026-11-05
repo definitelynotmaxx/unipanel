@@ -18,7 +18,7 @@ export function Field({ label, htmlFor, hint, error, optional, children }: Field
     <div className="form-group">
       <label htmlFor={htmlFor} className="form-label">
         {label}
-        {optional && <span className="ml-1 text-[10px] font-normal text-text-muted">{t('app.optional')}</span>}
+        {optional && <span className="ml-1 text-[10px] font-normal text-gray-400">{t('app.optional')}</span>}
       </label>
       {children}
       {error ? (
@@ -46,7 +46,7 @@ export function PasswordInput({ invalid, ...props }: PasswordInputProps) {
       />
       <button
         type="button"
-        className="absolute right-0 top-0 h-full w-10 grid place-items-center text-text-muted hover:text-text-primary transition-colors"
+        className="absolute right-0 top-0 h-full w-10 grid place-items-center text-gray-400 hover:text-gray-600 transition-colors"
         onClick={() => setVisible((v) => !v)}
         aria-pressed={visible}
         aria-label={t(visible ? 'login.hidePassword' : 'login.showPassword')}
@@ -61,7 +61,7 @@ export function PasswordInput({ invalid, ...props }: PasswordInputProps) {
 
 export function Alert({ children }: { children: ReactNode }) {
   return (
-    <div className="alert alert-danger" role="alert">
+    <div className="alert-danger" role="alert">
       <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
       <span>{children}</span>
     </div>
@@ -70,7 +70,7 @@ export function Alert({ children }: { children: ReactNode }) {
 
 export function WarnAlert({ children }: { children: ReactNode }) {
   return (
-    <div className="alert alert-warn" role="note">
+    <div className="alert-warn" role="note">
       <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-amber mt-1 block" aria-hidden="true" />
       <span>{children}</span>
     </div>
@@ -79,19 +79,19 @@ export function WarnAlert({ children }: { children: ReactNode }) {
 
 export function StrengthMeter({ strength }: { strength: Strength }) {
   const id = useId();
-  const colors = ['bg-text-muted', 'bg-danger', 'bg-amber', 'bg-mint', 'bg-mint'];
+  const colors = ['bg-gray-300', 'bg-red-400', 'bg-yellow-400', 'bg-green-500'];
   return (
     <div className="mt-2">
       <div className="flex items-baseline justify-between">
-        <span className="text-[9px] font-semibold uppercase tracking-[0.14em] text-text-muted">
+        <span className="text-[9px] font-semibold text-gray-400 uppercase tracking-wider">
           {t('setup.account.strength.label')}
         </span>
         <span
-          className={`mono text-[10px] uppercase tracking-[0.14em] ${
-            strength.level === 0 ? 'text-text-muted' :
-            strength.level === 1 ? 'text-danger' :
-            strength.level === 2 ? 'text-amber' :
-            'text-mint'
+          className={`mono text-[10px] uppercase tracking-wider ${
+            strength.level === 0 ? 'text-gray-400' :
+            strength.level === 1 ? 'text-red-400' :
+            strength.level === 2 ? 'text-yellow-500' :
+            'text-green-500'
           }`}
           aria-live="polite"
           id={id}
@@ -104,7 +104,7 @@ export function StrengthMeter({ strength }: { strength: Strength }) {
           <div
             key={i}
             className={`h-1 flex-1 rounded-full transition-colors ${
-              i < strength.level ? colors[strength.level] : 'bg-bg-tertiary'
+              i < strength.level ? colors[strength.level] : 'bg-gray-200'
             }`}
           />
         ))}
