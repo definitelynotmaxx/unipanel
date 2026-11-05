@@ -42,11 +42,12 @@ pub async fn bootstrap(
     let configured_locale = state.instance_locale().await;
     let suggested = suggest_locale(&headers);
 
-    let setup_required = state
+    let setup_complete = state
         .db
         .is_setup_complete()
         .await
         .map_err(|err| ApiError::internal(&err).with_request_id(Some(request_id.as_str())))?;
+    let setup_required = !setup_complete;
 
     let instance_name = if setup_required {
         brand().display_name.to_owned()
